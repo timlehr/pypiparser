@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
+with open('README.md') as f:
+    readme = f.read()
+
 setup(name='pypiparser',
       author="Tim Lehr",
       packages=find_packages(exclude=['tests']),
@@ -8,8 +11,8 @@ setup(name='pypiparser',
       description='Simple Python Package Index Parser',
       author_email='contact@timlehr.com',
       url='https://github.com/timlehr/pypiparser',
-      long_description=open('README.md').read(),
       long_description_content_type='text/markdown',
+      long_description=readme,
       keywords=['pypi', 'parser', 'packaging', 'simple', "pip"],
       include_package_data=True,
       use_scm_version=True,
