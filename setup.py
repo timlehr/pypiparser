@@ -16,5 +16,10 @@ setup(name='pypiparser',
       install_requires=[
           'beautifulsoup4',
           'requests'
+      ],
+      classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.6',
       ]
 )
