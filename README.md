@@ -1,5 +1,7 @@
 # PyPiParser
 
+[![Build Status](https://travis-ci.org/timlehr/pypiparser.svg?branch=master)](https://travis-ci.org/timlehr/pypiparser)
+
 Simple PyPI Package Index parser for index servers without XML / JSON API.
 
 _Note: It's still very much a prototype and missing a lot of potentially cool features, 
