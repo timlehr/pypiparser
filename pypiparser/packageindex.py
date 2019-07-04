@@ -10,6 +10,7 @@
 
 import platform
 import os
+import six
 import sys
 import pkg_resources
 import requests
@@ -32,9 +33,9 @@ def _get_config_dict():
 
     # PYTHON
     if sys.version_info > (3, 0):
-        config["python"] += ["py3", "36"]
+        config["python"] += ["py3", "36", "py2.py3"]
     else:
-        config["python"] += ["py2", "26", "27"]
+        config["python"] += ["py2", "26", "27", "py2.py3"]
     return config
 
 
@@ -48,7 +49,8 @@ def get_installed_version_str(self, package):
 
 class PackageIndex(object):
     def __init__(self, index_base_url):
-        self._url = index_base_url[:-1] if index_base_url.endswith('/') else index_base_url
+        index_base_url_str = six.text_type(index_base_url)
+        self._url = index_base_url_str[:-1] if index_base_url_str.endswith('/') else index_base_url_str
         self._index_cache = None
 
     def __repr__(self):
@@ -182,17 +184,18 @@ class PackageMetadata(object):
 
     @classmethod
     def create(cls, server, package, filename, url):
-        com = filename.split("-")
+        filename_str = six.text_type(filename)
+        com = filename_str.split("-")
 
         # remove extension from last component
         ext = com[-1].partition(".")[0]
         com[-1] = ext
 
-        if filename.endswith('.whl'):
+        if filename_str.endswith('.whl'):
             if len(com) < 6:
                 com.insert(2, None)  # insert None for optional build tag (that is missing)
             return WheelMetadata(server, url, *com)
-        elif filename.endswith('.tar.gz'):
+        elif filename_str.endswith('.tar.gz'):
             # TODO: TARBALL SUPPORT
             raise UnknownPackageTypeException
         else:
