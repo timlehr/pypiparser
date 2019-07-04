@@ -3,13 +3,13 @@ import unittest
 
 
 class ParserTest(unittest.TestCase):
-    _base_url = "https://pypi.timlehr.com"
+    _base_url = "https://pypi.timlehr.com/"
 
     def test_index(self):
         index = PackageIndex(self._base_url)
         self.assertTrue(index.online)
-        self.assertEqual(index.base_url, self._base_url)
-        self.assertEqual(index.index_url, "{}/simple".format(self._base_url))
+        self.assertEqual(index.base_url, self._base_url.strip("/"))
+        self.assertEqual(index.index_url, "{}/simple".format(self._base_url.strip("/")))
 
     def test_packages(self):
         index = PackageIndex(self._base_url)

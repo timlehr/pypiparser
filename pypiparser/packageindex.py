@@ -50,7 +50,7 @@ def get_installed_version_str(self, package):
 class PackageIndex(object):
     def __init__(self, index_base_url):
         index_base_url_str = six.text_type(index_base_url)
-        self._url = index_base_url_str[:-1] if index_base_url_str.endswith('/') else index_base_url_str
+        self._url = index_base_url_str.strip("/")
         self._index_cache = None
 
     def __repr__(self):
