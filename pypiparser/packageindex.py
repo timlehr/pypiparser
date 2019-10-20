@@ -67,7 +67,7 @@ class PackageIndex(object):
     @property
     def online(self):
         try:
-            r = requests.get(self._url)
+            r = requests.get(self.index_url)
             r.raise_for_status()  # Raises a HTTPError if the status is 4xx, 5xxx
             return True
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
