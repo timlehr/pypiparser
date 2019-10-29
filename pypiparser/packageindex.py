@@ -54,7 +54,7 @@ class PackageIndex(object):
         self._index_cache = None
 
     def __repr__(self):
-        return "<PackageIndex, '{}'>".format(self.base_url)
+        return "<PackageIndex, '{}'>".format(self.index_url)
 
     @property
     def base_url(self):
@@ -62,7 +62,7 @@ class PackageIndex(object):
 
     @property
     def index_url(self):
-        return "{}/simple".format(self._url) if self._url.strip('/').rpartition('/')[-1] != 'simple' else self._url
+        return "{}/simple".format(self._url) if not self._url.strip('/').endswith('simple') else self._url
 
     @property
     def online(self):
@@ -110,7 +110,7 @@ class PackageIndex(object):
         return self._index_cache
 
     def provides_package(self, package):
-        return package.lower() in [x.lower() for x in self.get_all_packages_str()]
+        return bool(self.get_all_versions(package))
 
     def get_all_packages_str(self, cached=True):
         return self._get_available_packages(True)
