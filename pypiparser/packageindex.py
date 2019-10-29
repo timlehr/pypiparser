@@ -62,7 +62,7 @@ class PackageIndex(object):
 
     @property
     def index_url(self):
-        return "{}/simple".format(self._url) if self._url.strip('/').rpartition('/')[-1] == 'simple' else self._url
+        return "{}/simple".format(self._url) if self._url.strip('/').rpartition('/')[-1] != 'simple' else self._url
 
     @property
     def online(self):
