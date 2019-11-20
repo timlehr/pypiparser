@@ -1,4 +1,3 @@
-
 # -----------------------------------------------------------------------------
 # This source file has been developed within the scope of the
 # Technical Director course at Filmakademie Baden-Wuerttemberg.
@@ -86,7 +85,13 @@ class PackageIndex(object):
 
     def _get_metadata(self, package):
         soup = self._get_soup(package.lower())
-        return [PackageMetadata.create(self, package, a.get_text(), a.get('href')) for a in soup.find_all('a')]
+        packages = []
+        for tag in soup.find_all('a'):
+            try:
+                packages.append(PackageMetadata.create(self, package, tag.get_text(), tag.get('href')))
+            except UnknownPackageTypeException:
+                print("Warning: Unsupported package '{}'".format(tag.get('href')))
+        return packages
 
     def _filter_packages(self, pkgs):
         filtered = []
@@ -142,9 +147,9 @@ class PackageMetadata(object):
 
     def __repr__(self):
         return "<'{dist}' ({typ}, v{ver}, '{serv}')>".format(dist=self.distribution,
-                                                            typ=self.pkg_type,
-                                                            ver=self.version,
-                                                            serv=self.server)
+                                                             typ=self.pkg_type,
+                                                             ver=self.version,
+                                                             serv=self.server)
 
     @property
     def pkg_type(self):
@@ -195,11 +200,8 @@ class PackageMetadata(object):
             if len(com) < 6:
                 com.insert(2, None)  # insert None for optional build tag (that is missing)
             return WheelMetadata(server, url, *com)
-        elif filename_str.endswith('.tar.gz'):
-            # TODO: TARBALL SUPPORT
-            raise UnknownPackageTypeException
         else:
-            raise UnknownPackageTypeException
+            raise UnknownPackageTypeException("Unsupported Package: '{}'".format(filename_str))
 
     def as_dict(self):
         attrs = ["url",
